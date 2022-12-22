@@ -13,8 +13,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +25,8 @@ import java.util.Set;
 public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
@@ -40,13 +44,18 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
     @Override
     public ResponseEntity<?> getAllEmployee(){
-        return ResponseEntity.status(HttpStatus.OK).body(employeeRepository.findAll());
+//        List<Employee> employees = employeeRepository.findAll();
+//        List<EmployeeDTO> employeeDTOS = conversionToDto(employees);
+//        return ResponseEntity.status(HttpStatus.OK).body(employeeDTOS);
+        return null;
     }
     @Override
     public ResponseEntity<?> saveEmployee(EmployeeCreationDTO dto){
         Employee employee = conversionToEntity(dto);
-        Set<Project> projects = (Set<Project>) projectRepository.findAllById(dto.getProjectId());
+        Set<Project> projects =  new HashSet<>();
+        projects.addAll(projectRepository.findAllById(dto.getProjectId()));
         employee.setProjects(projects);
+        employee.setPassword(passwordEncoder.encode(dto.getPassword()));
         Role role = roleRepository.findById(dto.getUser_roleId()).orElse(null);
         employee.setUser_role(role);
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeRepository.save(employee));

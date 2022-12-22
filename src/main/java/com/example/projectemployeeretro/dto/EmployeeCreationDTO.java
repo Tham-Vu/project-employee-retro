@@ -20,5 +20,6 @@ public class EmployeeCreationDTO implements Serializable {
     private LocalDate birthDay;
     private String userName;
     private Long user_roleId;
+    private String password;
     private Set<Long> projectId;
 }

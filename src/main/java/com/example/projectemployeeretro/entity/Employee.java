@@ -36,4 +36,9 @@ public class Employee implements Serializable {
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
     private Set<Project> projects;
+//    @Transient
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        Role role = this.getUser_role();
+//        return Collections.singleton(new SimpleGrantedAuthority(role.getRoleName())) ;
+//    }
 }

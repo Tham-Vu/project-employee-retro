@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     @Autowired
     private EmployeeService service;
-    @GetMapping(value = {"/", "/home"})
+    @GetMapping(value = {"/home"})
     public String hompage(){
         return "Home";
     }
