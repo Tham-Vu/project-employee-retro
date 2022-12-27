@@ -1,11 +1,11 @@
 package com.example.projectemployeeretro.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;

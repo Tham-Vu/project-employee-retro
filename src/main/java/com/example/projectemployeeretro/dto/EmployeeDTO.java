@@ -2,9 +2,6 @@ package com.example.projectemployeeretro.dto;
 
 import com.example.projectemployeeretro.entity.Project;
 import com.example.projectemployeeretro.entity.Role;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,6 @@
 package com.example.projectemployeeretro.dto;
 
 import com.example.projectemployeeretro.entity.Employee;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

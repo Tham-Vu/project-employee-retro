@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,9 +52,9 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain configuration(HttpSecurity http) throws Exception{
         http.cors().and().csrf().disable()
-                .authorizeHttpRequests().requestMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
-                .requestMatchers("/employees/**").permitAll()
-                .requestMatchers("/roles","/employees/home").hasAuthority("admin")
+                .authorizeHttpRequests().antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
+                .antMatchers("/employees/**").permitAll()
+                .antMatchers("/roles","/employees/home").hasAuthority("admin")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 //                .and().httpBasic();
