@@ -14,6 +14,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -24,12 +25,12 @@ public class Employee implements Serializable {
     private Long id;
     private String fullName;
     private String email;
-    private LocalDate birthDay;
-    private String userName;
+    private LocalDate birthday;
+    private String username;
     private String password;
     @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(nullable = false)
-    private Role user_role;
+    private Role role;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "employee_project",
@@ -41,4 +42,9 @@ public class Employee implements Serializable {
 //        Role role = this.getUser_role();
 //        return Collections.singleton(new SimpleGrantedAuthority(role.getRoleName())) ;
 //    }
+
+
+    public Employee(Long id) {
+        this.id = id;
+    }
 }

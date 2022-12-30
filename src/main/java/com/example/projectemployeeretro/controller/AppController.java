@@ -28,9 +28,9 @@ public class AppController {
     private final JwtUtils jwtUtils;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody EmployeeLoginDTO dto) throws Exception{
-        authenticate(dto.getUserName(), dto.getPassword());
+        authenticate(dto.getUsername(), dto.getPassword());
         System.out.println("OK");
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(dto.getUserName());
+        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(dto.getUsername());
         System.out.println(userDetails.getUsername());
         final String token = jwtUtils.generateToken(userDetails);
         log.info(token);

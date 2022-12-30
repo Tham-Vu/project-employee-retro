@@ -14,6 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RoleDTO implements Serializable {
     private Long id;
-    private String roleName;
+    private String name;
 //    private List<Employee> employees;
 }

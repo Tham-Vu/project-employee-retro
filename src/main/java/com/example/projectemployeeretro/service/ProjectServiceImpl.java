@@ -46,7 +46,7 @@ public class ProjectServiceImpl implements ProjectService{
     public ResponseEntity<?> updateProject(ProjectDTO dto, Long id){
         Project updateProject = projectRepository.findById(id)
                 .map(project -> {
-                    project.setProjectName(dto.getProjectName());
+                    project.setName(dto.getName());
                     project.setStartDate(dto.getStartDate());
                     project.setEndDate(dto.getEndDate());
                     project.setEmployees((Set<Employee>) employeeRepository.findAllById(dto.getEmployeeIds()));

@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProjectDTO implements Serializable {
     private Long id;
-    private String projectName;
+    private String name;
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Long> employeeIds;

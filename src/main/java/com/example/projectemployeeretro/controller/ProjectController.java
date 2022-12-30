@@ -16,13 +16,6 @@ public class ProjectController {
     public ResponseEntity<?> getAllProject(){
         return ResponseEntity.status(HttpStatus.OK).body(projectService.getAllProject());
     }
-//    @GetMapping("/{id}")
-//    public ResponseEntity<?> getProjectById(@PathVariable Long id){
-//        Optional<Project> project = repository.findById(id);
-//        if (project.isPresent()) {
-//            return ResponseEntity.status(HttpStatus.OK).body(project);
-//        }else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find employee with id " + id);
-//    }
     @PostMapping("/insert")
     public ResponseEntity<?> insertProject(@RequestBody ProjectDTO project){
         return ResponseEntity.status(HttpStatus.OK).body(projectService.saveProject(project));

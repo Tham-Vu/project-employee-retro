@@ -22,7 +22,7 @@ public class Project implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String projectName;
+    private String name;
     private LocalDate startDate;
     private LocalDate endDate;
 

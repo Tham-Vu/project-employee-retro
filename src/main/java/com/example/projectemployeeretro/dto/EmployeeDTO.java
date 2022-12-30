@@ -18,8 +18,8 @@ public class EmployeeDTO implements Serializable {
 //    private Long id;
     private String fullName;
     private String email;
-    private LocalDate birthDay;
-    private String userName;
-    private Role user_role;
+    private LocalDate birthday;
+    private String username;
+    private Role role;
     private List<Project> projects;
 }

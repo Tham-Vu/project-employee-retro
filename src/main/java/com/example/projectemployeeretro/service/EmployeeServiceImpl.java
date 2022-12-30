@@ -8,7 +8,9 @@ import com.example.projectemployeeretro.entity.Role;
 import com.example.projectemployeeretro.repository.EmployeeRepository;
 import com.example.projectemployeeretro.repository.ProjectRepository;
 import com.example.projectemployeeretro.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService{
     @Autowired
@@ -33,6 +39,11 @@ public class EmployeeServiceImpl implements EmployeeService{
     private RoleRepository roleRepository;
     @Autowired
     private ModelMapper mapper;
+
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
     public EmployeeDTO conversionToDto(Long id){
         Employee employee = employeeRepository.findById(id).orElse(null);
         EmployeeDTO employeeDTO = mapper.map(employee, EmployeeDTO.class);
@@ -56,8 +67,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         projects.addAll(projectRepository.findAllById(dto.getProjectId()));
         employee.setProjects(projects);
         employee.setPassword(passwordEncoder.encode(dto.getPassword()));
-        Role role = roleRepository.findById(dto.getUser_roleId()).orElse(null);
-        employee.setUser_role(role);
+        Role role = roleRepository.findById(dto.getRole_id()).orElse(null);
+        employee.setRole(role);
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeRepository.save(employee));
     }
     @Override
@@ -66,9 +77,9 @@ public class EmployeeServiceImpl implements EmployeeService{
                 .map(employee -> {
                     employee.setFullName(dto.getFullName());
                     employee.setEmail(dto.getEmail());
-                    employee.setBirthDay(dto.getBirthDay());
-                    employee.setUserName(dto.getUserName());
-                    employee.setUser_role(roleRepository.findById(dto.getUser_roleId()).orElse(null));
+                    employee.setBirthday(dto.getBirthday());
+                    employee.setUsername(dto.getUsername());
+                    employee.setRole(roleRepository.findById(dto.getRole_id()).orElse(null));
                     employee.setProjects((Set<Project>) projectRepository.findAllById(dto.getProjectId()));
                     return employeeRepository.save(employee);
                 }).orElseGet(()->{
@@ -87,5 +98,10 @@ public class EmployeeServiceImpl implements EmployeeService{
             employeeRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).body("Delete Successfully");
         }
+    }
+
+    @Override
+    public Employee getEmployeeById(Long id) {
+        return employeeRepository.findById(id).get();
     }
 }

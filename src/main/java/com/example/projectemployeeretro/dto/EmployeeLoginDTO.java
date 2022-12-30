@@ -11,6 +11,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeLoginDTO implements Serializable {
-    private String userName;
+    private String username;
     private String password;
 }

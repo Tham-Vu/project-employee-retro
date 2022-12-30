@@ -4,6 +4,7 @@ import com.example.projectemployeeretro.dto.RoleDTO;
 import com.example.projectemployeeretro.entity.Role;
 import com.example.projectemployeeretro.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public ResponseEntity<?> updateRole(RoleDTO dto, Long id){
         Role updateRole = roleRepository.findById(id).map(role -> {
-            role.setRoleName(dto.getRoleName());
+            role.setName(dto.getName());
             return roleRepository.save(role);
         }).orElseGet(()->{
             dto.setId(id);

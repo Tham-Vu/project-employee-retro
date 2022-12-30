@@ -17,9 +17,9 @@ import java.util.Set;
 public class EmployeeCreationDTO implements Serializable {
     private String fullName;
     private String email;
-    private LocalDate birthDay;
-    private String userName;
-    private Long user_roleId;
+    private LocalDate birthday;
+    private String username;
+    private Long role_id;
     private String password;
     private Set<Long> projectId;
 }

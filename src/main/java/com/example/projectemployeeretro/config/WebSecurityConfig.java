@@ -35,28 +35,20 @@ public class WebSecurityConfig {
     protected UserDetailsService userDetailsService(){
         return new CustomUserDetailsService();
     }
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        return new CustomAuthenticationProvider();
-//    }
     @Bean
     public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-//        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-//    }
     @Bean
     protected SecurityFilterChain configuration(HttpSecurity http) throws Exception{
-        http.cors().and().csrf().disable()
-                .authorizeHttpRequests().antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
-                .antMatchers("/employees/**").permitAll()
-                .antMatchers("/roles","/employees/home").hasAuthority("admin")
-                .anyRequest().authenticated()
-                .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.cors().and().csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
+//                .authorizeHttpRequests().antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
+//                .antMatchers("/employees/**").permitAll()
+//                .antMatchers("/roles","/employees/home").hasAuthority("admin")
+//                .anyRequest().authenticated()
+//                .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 //                .and().httpBasic();
         return http.build();
     }
