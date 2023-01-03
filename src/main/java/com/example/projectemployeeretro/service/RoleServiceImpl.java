@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class RoleServiceImpl implements RoleService{
@@ -29,14 +31,21 @@ public class RoleServiceImpl implements RoleService{
         return role;
     }
     @Override
-    public ResponseEntity<?> getAllRole(){
-        return ResponseEntity.status(HttpStatus.OK).body(roleRepository.findAll());
+    public List<Role> getAllRole(){
+        return roleRepository.findAll();
     }
     @Override
     public ResponseEntity<?> saveRole(RoleDTO dto){
         Role role = conversionToEntity(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(roleRepository.save(role));
     }
+
+    @Override
+    public Role saveRole(Role dto) {
+//        Role role = conversionToEntity(dto);
+        return roleRepository.save(dto);
+    }
+
     @Override
     public ResponseEntity<?> updateRole(RoleDTO dto, Long id){
         Role updateRole = roleRepository.findById(id).map(role -> {

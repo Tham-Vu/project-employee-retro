@@ -21,4 +21,8 @@ public class Role implements Serializable {
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private Set<Employee> employees;
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

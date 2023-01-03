@@ -2,8 +2,10 @@ package com.example.projectemployeeretro.jwt;
 
 import com.example.projectemployeeretro.entity.CustomUserDetails;
 import com.example.projectemployeeretro.service.CustomUserDetailsService;
+//import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +23,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-    private final JwtUtils jwtUtils;
-    private final CustomUserDetailsService service;
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private CustomUserDetailsService service;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
@@ -34,7 +38,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 username = jwtUtils.getUsernameFromToken(jwtToken);
             }catch (IllegalArgumentException e){
                 System.out.println("Unable to get JWT Token");
-            }catch (ExpiredJwtException e){
+            }
+            catch (ExpiredJwtException e){
                 System.out.println("JWT token has expired");
             }
         }

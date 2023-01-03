@@ -8,11 +8,13 @@ import com.example.projectemployeeretro.entity.Role;
 import com.example.projectemployeeretro.repository.EmployeeRepository;
 import com.example.projectemployeeretro.repository.ProjectRepository;
 import com.example.projectemployeeretro.repository.RoleRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employee;
     }
     @Override
-    public ResponseEntity<?> getAllEmployee(){
+    public List<Employee> getAllEmployee(){
 //        List<Employee> employees = employeeRepository.findAll();
 //        List<EmployeeDTO> employeeDTOS = conversionToDto(employees);
 //        return ResponseEntity.status(HttpStatus.OK).body(employeeDTOS);
@@ -103,5 +105,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id).get();
+    }
+
+    @Override
+    public List<EmployeeDTO> getNccUser() throws JsonProcessingException {
+        return null;
     }
 }

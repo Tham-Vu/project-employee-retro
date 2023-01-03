@@ -47,4 +47,8 @@ public class Employee implements Serializable {
     public Employee(Long id) {
         this.id = id;
     }
+
+    public Employee(String username) {
+        this.username = username;
+    }
 }

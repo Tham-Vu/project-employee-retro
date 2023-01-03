@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 @EnableMethodSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig{
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
 
@@ -43,12 +43,14 @@ public class WebSecurityConfig {
     }
     @Bean
     protected SecurityFilterChain configuration(HttpSecurity http) throws Exception{
-        http.cors().and().csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
-//                .authorizeHttpRequests().antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
-//                .antMatchers("/employees/**").permitAll()
-//                .antMatchers("/roles","/employees/home").hasAuthority("admin")
-//                .anyRequest().authenticated()
-//                .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.cors().and().csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
+        http.cors().and().csrf().disable()
+                .authorizeHttpRequests()
+                .antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
+                .antMatchers("/employees/**").permitAll()
+                .antMatchers("/roles","/employees/home").hasAuthority("admin")
+                .anyRequest().authenticated()
+                .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 //                .and().httpBasic();
         return http.build();
     }

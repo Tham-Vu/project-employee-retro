@@ -28,23 +28,8 @@ public class AppController {
     private final JwtUtils jwtUtils;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody EmployeeLoginDTO dto) throws Exception{
-        authenticate(dto.getUsername(), dto.getPassword());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
         System.out.println("OK");
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(dto.getUsername());
-        System.out.println(userDetails.getUsername());
-        final String token = jwtUtils.generateToken(userDetails);
-        log.info(token);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
-    }
-
-    private void authenticate(String username, String password) throws Exception{
-        try{
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            System.out.println(new UsernamePasswordAuthenticationToken(username, password));
-        }catch (DisabledException e){
-            throw new Exception("USER_DISABLE", e);
-        }catch (BadCredentialsException e){
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body("token");
     }
 }
