@@ -2,11 +2,15 @@ package com.example.projectemployeeretro.jwt;
 
 import com.example.projectemployeeretro.entity.CustomUserDetails;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.function.Function;
@@ -14,7 +18,10 @@ import java.util.function.Function;
 @Component
 public class JwtUtils implements Serializable {
     private final String jwtSecret = "vutham142857";
-    private final long jwtExp = 5*1000*3600;
+//    @Value("${project-employee-retro.app.jwtExpirationMs}")
+    private final long jwtExp = 1000 * 60 * 5;
+//    @Value("${project-employee-retro.app.jwtRefreshExpirationMs}")
+    private final long jwtRefreshExpirationMs = 10 * 1000 * 60;
     public String getUsernameFromToken(String token){
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -33,7 +40,7 @@ public class JwtUtils implements Serializable {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(CustomUserDetails userDetails){
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -41,8 +48,21 @@ public class JwtUtils implements Serializable {
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
-    public Boolean validateToken(String token, UserDetails userDetails){
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token, CustomUserDetails userDetails, HttpServletRequest request){
+        try {
+            final String username = getUsernameFromToken(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        }catch (ExpiredJwtException e){
+            request.setAttribute("expired", e.getMessage());
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "JWT token has expired");
+        }
+    }
+    public String generateRefreshToken(CustomUserDetails customUserDetails){
+        return Jwts.builder()
+                .setSubject(customUserDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtRefreshExpirationMs))
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
     }
 }

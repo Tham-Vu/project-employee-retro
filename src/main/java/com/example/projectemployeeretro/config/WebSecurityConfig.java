@@ -1,6 +1,9 @@
 package com.example.projectemployeeretro.config;
 
-import com.example.projectemployeeretro.jwt.JwtAuthFilter;
+import com.example.projectemployeeretro.jwt.JwtAuthenticationEntryPoint;
+import com.example.projectemployeeretro.jwt.JwtUtils;
+import com.example.projectemployeeretro.jwt.filter.JwtAuthenticationFilter;
+import com.example.projectemployeeretro.jwt.filter.JwtAuthorizationFilter;
 import com.example.projectemployeeretro.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class WebSecurityConfig{
     @Autowired
-    private JwtAuthFilter jwtAuthFilter;
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -44,13 +47,16 @@ public class WebSecurityConfig{
     @Bean
     protected SecurityFilterChain configuration(HttpSecurity http) throws Exception{
 //        http.cors().and().csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
+        JwtAuthenticationFilter authenticationFilter = new JwtAuthenticationFilter(authenticationManagerBean(http));
+        authenticationFilter.setFilterProcessesUrl("/api/login");
         http.cors().and().csrf().disable()
                 .authorizeHttpRequests()
                 .antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
                 .antMatchers("/employees/**").permitAll()
                 .antMatchers("/roles","/employees/home").hasAuthority("admin")
-                .anyRequest().authenticated()
-                .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated();
+        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilter(authenticationFilter);
 //                .and().httpBasic();
         return http.build();
     }

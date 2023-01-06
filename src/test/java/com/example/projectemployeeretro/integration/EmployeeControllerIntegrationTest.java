@@ -1,17 +1,24 @@
 package com.example.projectemployeeretro.integration;
 
 import com.example.projectemployeeretro.ProjectEmployeeRetroApplication;
+import com.example.projectemployeeretro.controller.EmployeeController;
 import com.example.projectemployeeretro.entity.Employee;
 import com.example.projectemployeeretro.entity.Role;
 import com.example.projectemployeeretro.repository.EmployeeRepository;
 import com.example.projectemployeeretro.service.EmployeeServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -28,29 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(                                            //tạo ApplicationContext trong môi trường Test để nap các bean
-        webEnvironment = SpringBootTest.WebEnvironment.MOCK,//cấu hình môi trường runtime, *.Mock: container sẽ hoạt động trong môi trường servlet giả
-        classes  = ProjectEmployeeRetroApplication.class
-)
+@SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(
-        locations = "classpath:application.properties"//cấu hình vị trí file chứa các cấu hình dành cho môi trường test Lưu ý rằng tệp thuộc tính được tải bằng @TestPropertySource sẽ ghi đè lên tệp application.properties hiện có .
-)
 public class EmployeeControllerIntegrationTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
     private EmployeeServiceImpl repository;
-    private Employee inputEmployee() {
-        Employee employee = new Employee();
-        employee.setId(1L);
-        employee.setFullName("Tham");
-        employee.setUsername("vutham");
-        employee.setPassword("142857");
-        employee.setRole(new Role(1l,"admin",null ));
-        employee.setEmail("mahesh@test.com");
-        return employee;
-    }
     @Test
     public void givenEmployees_whenGetEmployee_thenStatus200()throws Exception{
         Employee employee = new Employee();
