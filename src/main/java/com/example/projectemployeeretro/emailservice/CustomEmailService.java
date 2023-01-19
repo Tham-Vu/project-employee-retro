@@ -21,8 +21,9 @@ public class CustomEmailService {
     public JavaMailSender mailSender;
     @Autowired
     private EmployeeRepository repository;
-//    @Async
-    public void sendMail() throws MessagingException{
+    @Async
+    public void sendMail() throws MessagingException, InterruptedException {
+        Thread.sleep(5000);
         List<Employee> employees = repository.findAll();
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
@@ -34,8 +35,9 @@ public class CustomEmailService {
 
             FileSystemResource file = new FileSystemResource(new File(""));
             helper.addAttachment("Demo Mail", file);
-
-            helper.setTo(e.getEmail());
+            if (e.getEmail().isEmpty()) {
+                helper.setTo("joycevu142857@gmail.com");
+            }else helper.setTo(e.getEmail());
             helper.setSubject("Demo Send Email");
 
             mailSender.send(message);

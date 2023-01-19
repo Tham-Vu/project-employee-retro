@@ -1,9 +1,11 @@
 package com.example.projectemployeeretro.repository;
 
+import com.example.projectemployeeretro.dto.EmployeeDTO;
 import com.example.projectemployeeretro.entity.Employee;
 import com.example.projectemployeeretro.query.CountEmployeeByRoleName;
 import com.example.projectemployeeretro.query.CountEmployeeRole;
 import com.example.projectemployeeretro.query.ICountEmployeeRole;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -36,4 +38,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
    List<ICountEmployeeRole> countTotalEmployeeByRoleInterface();
    @Query(value = "select new com.example.projectemployeeretro.query.CountEmployeeByRoleName(r.name, e.id) from Role r left outer join Employee e on r.id = e.role.id")
    List<CountEmployeeByRoleName> getEmployeeByRoleName();
+   boolean existsByEmail(String email);
+   @Query(value = "select * from employee e, employee_project ep where e.id = ep.employee_id group by e.id", nativeQuery = true)
+   List<Employee> getAllInfo();
+
 }

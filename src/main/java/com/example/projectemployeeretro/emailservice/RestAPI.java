@@ -16,7 +16,7 @@ public class RestAPI {
     @Autowired
     public CustomEmailService emailService;
     @RequestMapping("/sendmail")
-    public String sendEmail() throws MessagingException {
+    public String sendEmail() throws MessagingException, InterruptedException {
         emailService.sendMail();
         return "Email Sent Successfully!";
     }

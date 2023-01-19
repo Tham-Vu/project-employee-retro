@@ -16,6 +16,10 @@ public class ProjectController {
     public ResponseEntity<?> getAllProject(){
         return ResponseEntity.status(HttpStatus.OK).body(projectService.getAllProject());
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProjectById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(projectService.getProjectById(id));
+    }
     @PostMapping("/insert")
     public ResponseEntity<?> insertProject(@RequestBody ProjectDTO project){
         return ResponseEntity.status(HttpStatus.OK).body(projectService.saveProject(project));

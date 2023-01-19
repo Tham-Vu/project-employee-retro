@@ -1,7 +1,5 @@
 package com.example.projectemployeeretro.config;
 
-import com.example.projectemployeeretro.jwt.JwtAuthenticationEntryPoint;
-import com.example.projectemployeeretro.jwt.JwtUtils;
 import com.example.projectemployeeretro.jwt.filter.JwtAuthenticationFilter;
 import com.example.projectemployeeretro.jwt.filter.JwtAuthorizationFilter;
 import com.example.projectemployeeretro.service.CustomUserDetailsService;
@@ -9,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,7 +46,7 @@ public class WebSecurityConfig{
         authenticationFilter.setFilterProcessesUrl("/api/login");
         http.cors().and().csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login").permitAll()
+                .antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login", "/sendmail", "/comments/**", "/api/refresh-token").permitAll()
                 .antMatchers("/employees/**").permitAll()
                 .antMatchers("/roles","/employees/home").hasAuthority("admin")
                 .anyRequest().authenticated();

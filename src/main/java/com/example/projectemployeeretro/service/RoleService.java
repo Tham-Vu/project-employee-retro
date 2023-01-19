@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface RoleService {
-    List<Role> getAllRole();
+    List<RoleDTO> getAllRole();
 
     ResponseEntity<?> saveRole(RoleDTO dto);
     Role saveRole(Role dto);

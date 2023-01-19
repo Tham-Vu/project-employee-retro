@@ -2,6 +2,7 @@ package com.example.projectemployeeretro.integration;
 
 import com.example.projectemployeeretro.ProjectEmployeeRetroApplication;
 import com.example.projectemployeeretro.controller.EmployeeController;
+import com.example.projectemployeeretro.dto.EmployeeDTO;
 import com.example.projectemployeeretro.entity.Employee;
 import com.example.projectemployeeretro.entity.Role;
 import com.example.projectemployeeretro.repository.EmployeeRepository;
@@ -9,6 +10,7 @@ import com.example.projectemployeeretro.service.EmployeeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,6 +24,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -39,6 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class EmployeeControllerIntegrationTest {
     @Autowired
+    ModelMapper mapper;
+    @Autowired
     private MockMvc mvc;
     @MockBean
     private EmployeeServiceImpl repository;
@@ -51,7 +56,7 @@ public class EmployeeControllerIntegrationTest {
         employee.setPassword("142857");
         employee.setRole(new Role(1l,"admin",null ));
         employee.setEmail("mahesh@test.com");
-        given(repository.getAllEmployee()).willReturn(Collections.singletonList(employee));
+        given(repository.getAllEmployee()).willReturn((List<EmployeeDTO>) employee);
 
         mvc.perform(get("/employees").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

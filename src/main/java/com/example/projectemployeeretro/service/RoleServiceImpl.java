@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,8 +32,8 @@ public class RoleServiceImpl implements RoleService{
         return role;
     }
     @Override
-    public List<Role> getAllRole(){
-        return roleRepository.findAll();
+    public List<RoleDTO> getAllRole(){
+        return roleRepository.findAll().stream().map(r -> mapper.map(r, RoleDTO.class)).collect(Collectors.toList());
     }
     @Override
     public ResponseEntity<?> saveRole(RoleDTO dto){
@@ -52,8 +53,9 @@ public class RoleServiceImpl implements RoleService{
             role.setName(dto.getName());
             return roleRepository.save(role);
         }).orElseGet(()->{
+            Role role = mapper.map(dto, Role.class);
             dto.setId(id);
-            return roleRepository.save(conversionToEntity(dto));
+            return roleRepository.save(role);
         });
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).body(roleRepository.save(updateRole));
     }

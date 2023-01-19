@@ -37,6 +37,12 @@ public class ProjectServiceImpl implements ProjectService{
     public ResponseEntity<?> getAllProject(){
         return ResponseEntity.status(HttpStatus.OK).body(projectRepository.findAll());
     }
+
+    @Override
+    public ResponseEntity<?> getProjectById(Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(projectRepository.findById(id));
+    }
+
     @Override
     public ResponseEntity<?> saveProject(ProjectDTO dto){
         Project project = conversionToEntity(dto);
@@ -49,7 +55,7 @@ public class ProjectServiceImpl implements ProjectService{
                     project.setName(dto.getName());
                     project.setStartDate(dto.getStartDate());
                     project.setEndDate(dto.getEndDate());
-                    project.setEmployees((Set<Employee>) employeeRepository.findAllById(dto.getEmployeeIds()));
+//                    project.setEmployees((Set<Employee>) employeeRepository.findAllById(dto.getEmployeeIds()));
                     return projectRepository.save(project);
                 }).orElseGet(()->{
                     conversionToEntity(dto).setId(id);

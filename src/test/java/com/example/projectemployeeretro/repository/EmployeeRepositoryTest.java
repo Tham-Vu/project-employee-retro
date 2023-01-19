@@ -5,10 +5,13 @@ import com.example.projectemployeeretro.dto.EmployeeCreationDTO;
 import com.example.projectemployeeretro.entity.Employee;
 import com.example.projectemployeeretro.entity.Project;
 import com.example.projectemployeeretro.entity.Role;
+import com.example.projectemployeeretro.jwt.JwtUtils;
+import com.example.projectemployeeretro.spring_event.CustomPublisher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,6 +24,10 @@ import static org.hamcrest.core.IsEqual.equalTo;
 //)
 @DataJpaTest
 class EmployeeRepositoryTest {
+    @MockBean
+    private CustomPublisher customPublisher;
+    @MockBean
+    private JwtUtils jwtUtils;
     @Autowired
     private EmployeeRepository repository;
     private Employee inputEmployee() {

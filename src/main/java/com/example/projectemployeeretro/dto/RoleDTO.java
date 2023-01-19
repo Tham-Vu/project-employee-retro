@@ -15,5 +15,5 @@ import java.util.List;
 public class RoleDTO implements Serializable {
     private Long id;
     private String name;
-//    private List<Employee> employees;
+    private List<EmployeeDTO> employees;
 }

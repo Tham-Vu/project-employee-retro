@@ -5,30 +5,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import java.io.Serializable;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
-public class Comment implements Serializable {
-//    @EmbeddedId
-//    EmployeeProjectKey id;
+@NoArgsConstructor
+public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @MapsId("employee_id")
-    private Employee employee;
-
+    private Project project;
     @ManyToOne
-    @MapsId("project_id")
-    private  Project project;
-    private String content;
-    private LocalDate date;
+    private Employee evaluator;
+    @ManyToOne
+    private Employee evaluatee;
+    private Float point;
+    private String comment;
+    private LocalDate dateCreate;
 }

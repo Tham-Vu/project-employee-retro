@@ -21,9 +21,9 @@ public class TransactionalService {
     @Transactional
     public ResponseEntity<?> getEvenEmployeeID(Long id, String name){
         Employee employee = null;
-        if(id % 2 == 0){
-             employee = repository.findById(id).get();
-             employee.setUsername(name);
+        if (id % 2 == 0) {
+                employee = repository.findById(id).get();
+                employee.setUsername(name);
         }
         return ResponseEntity.status(HttpStatus.OK).body(mapper.map(employee, EmployeeDTO.class));
     }

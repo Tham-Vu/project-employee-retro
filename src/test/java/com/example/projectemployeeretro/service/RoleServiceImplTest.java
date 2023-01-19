@@ -1,5 +1,6 @@
 package com.example.projectemployeeretro.service;
 
+import com.example.projectemployeeretro.dto.RoleDTO;
 import com.example.projectemployeeretro.entity.Role;
 import com.example.projectemployeeretro.repository.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -49,8 +51,8 @@ class RoleServiceImplTest {
         List<Role> list = new ArrayList<>();
         list.add(role);
         when(roleRepository.findAll()).thenReturn(list);
-        List<Role> result = service.getAllRole();
-        assertEquals(list, result);
+        List<RoleDTO> result = service.getAllRole();
+        assertEquals(list.stream().map(r -> mapper.map(r, RoleDTO.class)).collect(Collectors.toList()), result);
     }
     @Test
     void testSaveRole(){

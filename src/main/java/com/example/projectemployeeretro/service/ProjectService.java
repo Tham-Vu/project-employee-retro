@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface ProjectService {
     ResponseEntity<?> getAllProject();
+    ResponseEntity<?> getProjectById(Long id);
 
     ResponseEntity<?> saveProject(ProjectDTO dto);
 

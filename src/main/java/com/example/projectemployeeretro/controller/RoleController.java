@@ -17,8 +17,6 @@ import java.util.Collection;
 public class RoleController {
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private RoleRepository repository;
     @GetMapping
     public ResponseEntity<?> getAllRole(){
         return ResponseEntity.status(HttpStatus.OK).body(roleService.getAllRole());
@@ -30,6 +28,10 @@ public class RoleController {
     }
     @PatchMapping("/update/{id}")
     public ResponseEntity<?> updateRole(@RequestBody RoleDTO dto, @PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.RESET_CONTENT).body(roleService.updateRole(dto, id));
+    }
+    @PutMapping("/updatePut/{id}")
+    public ResponseEntity<?> updatePutRole(@RequestBody RoleDTO dto, @PathVariable Long id){
         return ResponseEntity.status(HttpStatus.RESET_CONTENT).body(roleService.updateRole(dto, id));
     }
     @DeleteMapping("/delete/{id}")

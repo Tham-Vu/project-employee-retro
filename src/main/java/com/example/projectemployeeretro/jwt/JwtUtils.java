@@ -5,9 +5,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +18,17 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Component
+@Getter
 public class JwtUtils implements Serializable {
     private final String jwtSecret = "vutham142857";
-//    @Value("${project-employee-retro.app.jwtExpirationMs}")
-    private final long jwtExp = 1000 * 60 * 5;
+    private final long jwtExp = 1000 * 60 *60 *1;
+    private final long jwtRefreshExpirationMs = 2 * 1000 * 60 * 60;
+
+    //    @Value("${project-employee-retro.app.jwtExpirationMs}")
+//    private long jwtExp;
 //    @Value("${project-employee-retro.app.jwtRefreshExpirationMs}")
-    private final long jwtRefreshExpirationMs = 10 * 1000 * 60;
+//    private long jwtRefreshExpirationMs;
+
     public String getUsernameFromToken(String token){
         return getClaimFromToken(token, Claims::getSubject);
     }

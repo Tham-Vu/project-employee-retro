@@ -2,6 +2,8 @@ package com.example.projectemployeeretro.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.modelmapper.spi.SourceGetter;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -15,10 +17,10 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@EqualsAndHashCode
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,20 +31,10 @@ public class Employee implements Serializable {
     private String username;
     private String password;
     @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(nullable = false)
     private Role role;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "employee_project",
-            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
-    private Set<Project> projects;
-//    @Transient
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Role role = this.getUser_role();
-//        return Collections.singleton(new SimpleGrantedAuthority(role.getRoleName())) ;
-//    }
-
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<EmployeeProject> employeeProjects;
 
     public Employee(Long id) {
         this.id = id;
@@ -52,3 +44,8 @@ public class Employee implements Serializable {
         this.username = username;
     }
 }
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "employee_project2",
+//            joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
+//    private Set<Project> projects;

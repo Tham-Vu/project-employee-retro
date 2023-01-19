@@ -19,7 +19,7 @@ public class EmployeeCreationDTO implements Serializable {
     private String email;
     private LocalDate birthday;
     private String username;
-    private Long role_id;
+    private Long roleId;
     private String password;
-    private Set<Long> projectId;
+//    private Set<Long> projectId;
 }

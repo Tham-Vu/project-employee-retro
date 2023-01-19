@@ -15,7 +15,8 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@EqualsAndHashCode
+//@ToString
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
 public class Project implements Serializable {
@@ -25,10 +26,8 @@ public class Project implements Serializable {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-
-    @ManyToMany( cascade = CascadeType.ALL, mappedBy = "projects")
-//    @JoinTable(name = "employee_project",
-//            inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
-//            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
-    private Set<Employee> employees;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private Set<EmployeeProject> employeeProjects;
 }
+//    @ManyToMany( cascade = CascadeType.ALL, mappedBy = "projects")
+//    private Set<Employee> employees;
