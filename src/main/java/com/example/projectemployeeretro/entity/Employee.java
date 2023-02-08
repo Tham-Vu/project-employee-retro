@@ -43,6 +43,15 @@ public class Employee implements Serializable {
     public Employee(String username) {
         this.username = username;
     }
+
+    public Employee(String fullName, String email, LocalDate birthday, String username, String password) {
+        this.fullName = fullName;
+        this.email = email;
+        this.birthday = birthday;
+        this.username = username;
+        this.password = password;
+
+    }
 }
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name = "employee_project2",

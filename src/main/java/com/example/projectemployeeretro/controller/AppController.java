@@ -2,6 +2,7 @@ package com.example.projectemployeeretro.controller;
 
 import com.example.projectemployeeretro.entity.CustomUserDetails;
 import com.example.projectemployeeretro.jwt.JwtUtils;
+import com.example.projectemployeeretro.scheduler.schedule_config.SpringSchedulingConfig;
 import com.example.projectemployeeretro.service.CustomUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequestMapping("/api")
 @Slf4j
 public class AppController {
+    private final SpringSchedulingConfig schedulingConfig;
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtUtils jwtUtils;
@@ -49,5 +51,9 @@ public class AppController {
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         }else throw new RuntimeException("Refresh token is missing");
+    }
+    @GetMapping("/refresh-cron-schedule")
+    public void refreshCronSchedule(){
+        schedulingConfig.refreshCronSchedule();
     }
 }

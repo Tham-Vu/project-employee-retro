@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -35,6 +36,7 @@ public class SpringSchedulingConfig implements SchedulingConfigurer {
     @Autowired
     private ScheduleTimeService service;
     private String crond;
+    private ScheduledFuture scheduledFuture;
 
     @Bean
     public TaskScheduler taskScheduler(){
@@ -47,22 +49,21 @@ public class SpringSchedulingConfig implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        taskRegistrar.addTriggerTask(
-                new Runnable() {
-                    @Override
-                    public void run() {
-//                        scheduler.getCronFromDatabase();
-                        scheduler.postHaveLunch();
-                    }
-                },
-                t -> {
-                    CronTrigger cronTrigger = new CronTrigger(crond);
-                    return cronTrigger.nextExecutionTime(t);
-                });
+        taskRegistrar.setScheduler(taskScheduler());
+        scheduleFuture(taskScheduler());
     }
-    @PostConstruct
-    public void initDatabase(){
-//        crond = service.getAll().get(service.getAll().size() - 1).getValue();
-        crond = scheduler.getCronFromDatabase();
+
+    public void refreshCronSchedule(){
+        scheduledFuture.cancel(true);
+        scheduleFuture(taskScheduler());
+    }
+    private void scheduleFuture(TaskScheduler taskScheduler){
+        scheduledFuture = taskScheduler().schedule(() -> scheduler.postHaveLunch(), new Trigger() {
+            @Override
+            public Date nextExecutionTime(TriggerContext triggerContext) {
+                crond = scheduler.getCronFromDatabase();
+                return new CronTrigger(crond).nextExecutionTime(triggerContext);
+            }
+        });
     }
 }

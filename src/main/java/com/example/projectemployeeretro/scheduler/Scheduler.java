@@ -60,9 +60,10 @@ public class Scheduler{
         Chat chat = new Chat("Me", "zone " + LocalDateTime.now());
         System.out.println(chat.toString());
     }
-    @Scheduled(cron = "0-30 * * * * ?")
+//    @Scheduled(cron = "0-30 * * * * ?")
     public String getCronFromDatabase(){
         String crond = repo.findAll().get(repo.findAll().size()-1).getValue();
+//        String crond = "0-30 * * * * ?";
         System.out.println(crond + LocalDateTime.now());
         return crond;
     }

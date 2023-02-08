@@ -46,7 +46,7 @@ public class WebSecurityConfig{
         authenticationFilter.setFilterProcessesUrl("/api/login");
         http.cors().and().csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login", "/sendmail", "/comments/**", "/api/refresh-token").permitAll()
+                .antMatchers("/employees", "/employees/hello", "/employees/insert", "/api/login", "/sendmail", "/comments/**", "/api/refresh-token", "/h2/**").permitAll()
                 .antMatchers("/employees/**").permitAll()
                 .antMatchers("/roles","/employees/home").hasAuthority("admin")
                 .anyRequest().authenticated();
